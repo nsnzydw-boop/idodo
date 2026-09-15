@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>האתר של עידו</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        /* לוגו בלונים תלת מימדי */
+        .logo-3d {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff9800;
+            text-shadow: 2px 2px 0px #d32f2f, 4px 4px 0px #b71c1c, 6px 6px 10px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
+        }
+        /* תפריט ניווט */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        nav button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+        nav button:hover, nav button.active {
+            background-color: #ff9800;
+            color: #fff;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: block;
+        }
+        .post {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .post h2 {
+            margin-top: 0;
+            color: #222;
+        }
+        .like-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        .like-btn:hover {
+            background-color: #45a049;
+        }
+        .comments-section {
+            margin-top: 20px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .comment {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-right: 4px solid #ff9800;
+        }
+        .admin-badge {
+            background-color: #ff9800;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        .admin-bubble {
+            background-color: #fff3e0 !important;
+            border-right-color: #f57c00 !important;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .submit-btn:hover {
+            background-color: #f57c00;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-3d">עידו</div>
+        <p>ברוכים הבאים לאתר והבלוג הרשמי!</p>
+    </header>
+
+    <!-- תפריט ניווט עליון -->
+    <nav>
+        <button onclick="switchPage('home')" id="btn-home" class="active">בלוגים</button>
+        <button onclick="switchPage('about')" id="btn-about">אודות</button>
+        <button onclick="switchPage('support')" id="btn-support">תמיכה</button>
+        <button onclick="switchPage('contact')" id="btn-contact">צור קשר</button>
+    </nav>
+
+    <div class="container">
+        
+        <!-- עמוד הבלוגים (בית) -->
+        <div id="page-home" class="page-content active">
+            <h2>הפוסטים שלי</h2>
+            <div class="post">
+                <h3>הפוסט הראשון בבלוג</h3>
+                <p>היום העליתי את האתר שלי ל-GitHub Pages! כאן תוכלו לקרוא עדכונים, להגיב ולתן לייק.</p>
+                <button class="like-btn" onclick="likePost()">לייק (<span id="like-count">0</span>) ❤️</button>
+                
+                <div class="comments-section">
+                    <h4>תגובות</h4>
+                    <div id="comments-list"></div>
+                    
+                    <input type="text" id="comment-name" placeholder="השם שלך (כתוב 'עידו' בשביל מנהל)">
+                    <textarea id="comment-text" placeholder="כתוב תגובה..."></textarea>
+                    <input type="file" id="comment-file">
+                    <button class="submit-btn" onclick="addComment()">הוסף תגובה</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- עמוד אודות -->
+        <div id="page-about" class="page-content">
+            <h2>אודות</h2>
+            <p>ברוכים הבאים לאתר האישי שלי! האתר נבנה מאפס במטרה לשתף את הפרויקטים, המחשבות והעדכונים שלי עם החברים והסביבה.</p>
+            <p>האתר כולל מערכת בלוג מותאמת אישית, אפשרויות לייק ותגובות עם זיהוי מנהל אוטומטי.</p>
+        </div>
+
+        <!-- עמוד תמיכה -->
+        <div id="page-support" class="page-content">
+            <h2>תמיכה</h2>
+            <p>נתקלתם בבעיה באתר? יש לכם שאלות או הצעות לשיפור?</p>
+            <p>אפשר ליצור קשר דרך עמוד "צור קשר" או לדווח על תקלות ואשמח לעזור בהקדם!</p>
+        </div>
+
+        <!-- עמוד צור קשר -->
+        <div id="page-contact" class="page-content">
+            <h2>צור קשר</h2>
+            <p>רוצים להגיד שלום או לשאול משהו? מלאו את הפרטים ונחזור אליכם:</p>
+            <input type="text" placeholder="השם שלך">
+            <input type="email" placeholder="האימייל שלך">
+            <textarea placeholder="הודעה..."></textarea>
+            <button class="submit-btn" onclick="alert('ההודעה נשלחה בהצלחה!')">שליחה</button>
+        </div>
+
+    </div>
+
+    <script>
+        // מעבר בין עמודים
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('btn-' + pageId).classList.add('active');
+        }
+
+        // ניהול לייקים מקומיים
+        let likes = localStorage.getItem('blog_likes') ? parseInt(localStorage.getItem('blog_likes')) : 0;
+        document.getElementById('like-count').innerText = likes;
+
+        function likePost() {
+            if (!localStorage.getItem('liked')) {
+                likes++;
+                localStorage.setItem('blog_likes', likes);
+                localStorage.setItem('liked', 'true');
+                document.getElementById('like-count').innerText = likes;
+            } else {
+                alert('כבר עשית לייק לפוסט הזה!');
+            }
+        }
+
+        // ניהול תגובות
+        let comments = JSON.parse(localStorage.getItem('blog_comments')) || [];
+        renderComments();
+
+        function addComment() {
+            let name = document.getElementById('comment-name').value.trim();
+            let text = document.getElementById('comment-text').value.trim();
+            let fileInput = document.getElementById('comment-file');
+            
+            if(!name || !text) {
+                alert('נא למלא שם ותגובה.');
+                return;
+            }
+
+            let isAdmin = (name === 'עידו');
+            let commentObj = { name, text, isAdmin };
+
+            if(fileInput.files && fileInput.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    commentObj.image = e.target.result;
+                    comments.push(commentObj);
+                    saveAndRender();
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                comments.push(commentObj);
+                saveAndRender();
+            }
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('blog_comments', JSON.stringify(comments));
+            renderComments();
+            document.getElementById('comment-text').value = '';
+            document.getElementById('comment-file').value = '';
+        }
+
+        function renderComments() {
+            let list = document.getElementById('comments-list');
+            list.innerHTML = '';
+            comments.css = '';
+            comments.forEach(c => {
+                let div = document.createElement('div');
+                div.className = 'comment' + (c.isAdmin ? ' admin-bubble' : '');
+                
+                let badge = c.isAdmin ? '<span class="admin-badge">תג מנהל</span>' : '';
+                let imgHtml = c.image ? `<br><img src="${c.image}" style="max-width:150px; margin-top:5px; border-radius:5px;">` : '';
+                
+                div.innerHTML = `<strong>${badge}${c.name}:</strong> ${c.text} ${imgHtml}`;
+                list.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
